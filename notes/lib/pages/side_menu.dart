@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:notes/colors.dart';
-import 'Setting.dart';
+import 'package:notes/pages/archive.dart';
+import 'package:notes/pages/setting.dart';
 
 class SideMenu extends StatefulWidget {
-  const SideMenu({Key? key}) : super(key: key);
+  const SideMenu({super.key});
 
   @override
-  _SideMenuState createState() => _SideMenuState();
+  State<SideMenu> createState() => _SideMenuState();
 }
 
 class _SideMenuState extends State<SideMenu> {
@@ -20,26 +21,21 @@ class _SideMenuState extends State<SideMenu> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                  margin: EdgeInsets.symmetric(horizontal: 25, vertical: 16),
-                  child: Text(
-                    "Google Keep",
-                    style: TextStyle(
-                        color: white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 25),
-                  )),
+                margin: EdgeInsets.symmetric(horizontal: 25, vertical: 16),
+                child: Text(
+                  'Google Keep',
+                  style: TextStyle(
+                      color: white, fontSize: 25, fontWeight: FontWeight.bold),
+                ),
+              ),
               Divider(
                 color: white.withOpacity(0.3),
               ),
               sectionOne(),
-              SizedBox(
-                height: 5,
-              ),
+              SizedBox(height: 5),
               sectionTwo(),
-              SizedBox(
-                height: 5,
-              ),
-              sectionSetting()
+              SizedBox(height: 5),
+              SectionSetting(),
             ],
           ),
         ),
@@ -49,17 +45,18 @@ class _SideMenuState extends State<SideMenu> {
 
   Widget sectionOne() {
     return Container(
-      margin: EdgeInsets.only(right: 10),
-      child: TextButton(
+        margin: EdgeInsets.only(right: 10),
+        child: TextButton(
           style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(
-                  Colors.orangeAccent.withOpacity(0.3)),
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(50),
-                    bottomRight: Radius.circular(50)),
-              ))),
+            backgroundColor:
+                MaterialStateProperty.all(Colors.orangeAccent.withOpacity(0.3)),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+              topRight: Radius.circular(50),
+              bottomRight: Radius.circular(50),
+            ))),
+          ),
           onPressed: () {},
           child: Container(
             padding: EdgeInsets.all(5),
@@ -70,31 +67,30 @@ class _SideMenuState extends State<SideMenu> {
                   size: 25,
                   color: white.withOpacity(0.7),
                 ),
-                SizedBox(
-                  width: 27,
-                ),
+                SizedBox(width: 27),
                 Text(
-                  "Notes",
+                  'Notes',
                   style: TextStyle(color: white.withOpacity(0.7), fontSize: 18),
-                )
+                ),
               ],
             ),
-          )),
-    );
+          ),
+        ));
   }
 
   Widget sectionTwo() {
     return Container(
-      margin: EdgeInsets.only(right: 10),
-      child: TextButton(
+        margin: EdgeInsets.only(right: 10),
+        child: TextButton(
           style: ButtonStyle(
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                topRight: Radius.circular(50),
-                bottomRight: Radius.circular(50)),
-          ))),
-          onPressed: () {},
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+              topRight: Radius.circular(50),
+              bottomRight: Radius.circular(50),
+            ))),
+          ),
+          onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => ArchiveView()));},
           child: Container(
             padding: EdgeInsets.all(5),
             child: Row(
@@ -104,33 +100,32 @@ class _SideMenuState extends State<SideMenu> {
                   size: 25,
                   color: white.withOpacity(0.7),
                 ),
-                SizedBox(
-                  width: 27,
-                ),
+                SizedBox(width: 27),
                 Text(
-                  "Archive",
+                  'Archive',
                   style: TextStyle(color: white.withOpacity(0.7), fontSize: 18),
-                )
+                ),
               ],
             ),
-          )),
-    );
+          ),
+        ));
   }
 
-  Widget sectionSetting() {
+  Widget SectionSetting() {
     return Container(
-      margin: EdgeInsets.only(right: 10),
-      child: TextButton(
+        margin: EdgeInsets.only(right: 10),
+        child: TextButton(
           style: ButtonStyle(
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                topRight: Radius.circular(50),
-                bottomRight: Radius.circular(50)),
-          ))),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+              topRight: Radius.circular(50),
+              bottomRight: Radius.circular(50),
+            ))),
+          ),
           onPressed: () {
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => Settings()));
+                context, MaterialPageRoute(builder: (context) => Setting()));
           },
           child: Container(
             padding: EdgeInsets.all(5),
@@ -141,16 +136,14 @@ class _SideMenuState extends State<SideMenu> {
                   size: 25,
                   color: white.withOpacity(0.7),
                 ),
-                SizedBox(
-                  width: 27,
-                ),
+                SizedBox(width: 27),
                 Text(
-                  "Settings",
+                  'Settings',
                   style: TextStyle(color: white.withOpacity(0.7), fontSize: 18),
-                )
+                ),
               ],
             ),
-          )),
-    );
+          ),
+        ));
   }
 }

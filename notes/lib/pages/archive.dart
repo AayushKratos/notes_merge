@@ -1,10 +1,11 @@
 import 'dart:ui';
+import 'package:flutter/material.dart';
 import 'package:notes/colors.dart';
+import 'package:notes/pages/create_note_view.dart';
 import 'package:notes/pages/side_menu.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_grid_view.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_tile.dart';
-import 'CreateNoteView.dart';
-import 'package:flutter/material.dart';
+
 class ArchiveView extends StatefulWidget {
   const ArchiveView({Key? key}) : super(key: key);
 

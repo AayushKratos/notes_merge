@@ -1,45 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:notes/colors.dart';
 
-class Settings extends StatefulWidget {
-  const Settings({Key? key}) : super(key: key);
+class Setting extends StatefulWidget {
+  const Setting({super.key});
 
   @override
-  _SettingsState createState() => _SettingsState();
+  State<Setting> createState() => _SettingState();
 }
 
-class _SettingsState extends State<Settings> {
-  bool value = true;
+class _SettingState extends State<Setting> {
+  bool value = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: bgColor,
       appBar: AppBar(
-          backgroundColor: bgColor, elevation: 0.0, title: Text("Settings")),
-      body: Container(
-        padding: EdgeInsets.all(20),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Text(
-                  "Sync",
-                  style: TextStyle(color: Colors.white, fontSize: 18),
-                ),
-                Spacer(),
-                Transform.scale(
-                  scale: 1.3,
-                  child: Switch.adaptive(
-                      value: value,
-                      onChanged: (switchValue) {
-                        setState(() {
-                          this.value = switchValue;
-                        });
-                      }),
-                )
-              ],
-            )
-          ],
+        backgroundColor: bgColor,
+        elevation: 0.0,
+        title: Text('Settings', style: TextStyle(color: white),),
+      ),
+      body: SafeArea(
+        child: Container(
+          margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Text('Sync', style: TextStyle(fontSize: 18, color: white),),
+                  Spacer(),
+                  Transform.scale(
+                    scale: 1.3,
+                    child: new Switch.adaptive(splashRadius: 30, value: value, onChanged: (switchValue){
+                      setState(() {
+                        this.value = switchValue;
+                      });
+                    }),
+                  )
+                ]
+              ),
+            ],
+          ),
         ),
       ),
     );
