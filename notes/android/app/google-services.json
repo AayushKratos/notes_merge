@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "933444481317",
+    "project_id": "notes-merged",
+    "storage_bucket": "notes-merged.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:933444481317:android:5754c0135a54866c2a6acc",
+        "android_client_info": {
+          "package_name": "com.example.notes"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAqmg3X_iUMz5iGpARLQEKiKlgf6zUB3i0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:notes/colors.dart';
 import 'package:notes/model/NoteModel.dart';
 import 'package:notes/services/db.dart';
-import 'NoteView.dart';
 import 'home.dart';
 
 class EditNoteView extends StatefulWidget {

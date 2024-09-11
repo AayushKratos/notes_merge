@@ -14,7 +14,6 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +26,7 @@ class _LoginState extends State<Login> {
           children: [
             SignInButton(Buttons.Google, onPressed: () async {
               await signInWithGoogle();
-              final User? currentUser = await _auth.currentUser;
+              final User? currentUser = await FirebaseAuth.instance.currentUser;
               LocalDataSaver.saveLoginData(true);
               LocalDataSaver.saveImg(currentUser!.photoURL.toString());
               LocalDataSaver.saveMail(currentUser.email.toString());

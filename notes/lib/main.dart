@@ -37,11 +37,12 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: isLogIn ? Login() : Home(),
+      home: isLogIn ? Home() : Login(),
     );
   }
 }

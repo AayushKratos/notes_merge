@@ -1,5 +1,4 @@
 import 'dart:ui';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:notes/colors.dart';
 import 'package:notes/model/NoteModel.dart';
 import 'package:notes/pages/login.dart';

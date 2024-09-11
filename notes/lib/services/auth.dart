@@ -6,6 +6,7 @@ final GoogleSignIn googleSignIn = GoogleSignIn();
 
 //SIGN IN KA Function
 Future<User?> signInWithGoogle() async {
+    print('....................');
   try {
     //SIGNING IN WITH GOOGLE
     final GoogleSignInAccount? googleSignInAccount =
