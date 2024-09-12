@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:notes/colors.dart';
 import 'package:notes/pages/archive.dart';
+import 'package:notes/pages/home.dart';
+// import 'package:notes/pages/archive.dart';
 import 'package:notes/pages/setting.dart';
 
 class SideMenu extends StatefulWidget {
@@ -57,7 +59,7 @@ class _SideMenuState extends State<SideMenu> {
               bottomRight: Radius.circular(50),
             ))),
           ),
-          onPressed: () {},
+          onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));},
           child: Container(
             padding: EdgeInsets.all(5),
             child: Row(
@@ -90,7 +92,9 @@ class _SideMenuState extends State<SideMenu> {
               bottomRight: Radius.circular(50),
             ))),
           ),
-          onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (context) => ArchiveView()));},
+
+          onPressed: () {Navigator.pop(context);
+            Navigator.push(context, MaterialPageRoute(builder: (context) => ArchivePage()));},
           child: Container(
             padding: EdgeInsets.all(5),
             child: Row(
@@ -124,6 +128,7 @@ class _SideMenuState extends State<SideMenu> {
             ))),
           ),
           onPressed: () {
+            Navigator.pop(context);
             Navigator.push(
                 context, MaterialPageRoute(builder: (context) => Setting()));
           },

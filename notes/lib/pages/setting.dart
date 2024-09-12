@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:notes/colors.dart';
+import 'package:notes/pages/side_menu.dart';
 
 class Setting extends StatefulWidget {
   const Setting({super.key});
@@ -19,7 +20,9 @@ class _SettingState extends State<Setting> {
         backgroundColor: bgColor,
         elevation: 0.0,
         title: Text('Settings', style: TextStyle(color: white),),
+        leading: IconButton(onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => SideMenu()));}, icon: Icon(Icons.menu_outlined, color: white,)),
       ),
+      drawer: SideMenu(),
       body: SafeArea(
         child: Container(
           margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),

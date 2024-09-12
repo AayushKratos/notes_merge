@@ -1,261 +1,118 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:notes/colors.dart';
-import 'package:notes/pages/create_note_view.dart';
+import 'package:notes/model/NoteModel.dart';
+import 'package:notes/pages/note_view.dart';
 import 'package:notes/pages/side_menu.dart';
+import 'package:notes/services/db.dart'; // Make sure this import is correct
 import 'package:staggered_grid_view_flutter/widgets/staggered_grid_view.dart';
 import 'package:staggered_grid_view_flutter/widgets/staggered_tile.dart';
 
-class ArchiveView extends StatefulWidget {
-  const ArchiveView({Key? key}) : super(key: key);
+class ArchivePage extends StatefulWidget {
+  const ArchivePage({Key? key}) : super(key: key);
 
   @override
-  _ArchiveViewState createState() => _ArchiveViewState();
+  _ArchivePageState createState() => _ArchivePageState();
 }
 
-class _ArchiveViewState extends State<ArchiveView> {
-  GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
-  String note =
-      "THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE";
-  String note1 = "THIS IS NOTE THIS IS NOTE THIS IS NOTE";
+class _ArchivePageState extends State<ArchivePage> {
+  bool isLoading = true;
+  List<Note> archivedNotes = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchArchivedNotes();
+  }
+
+  Future<void> _fetchArchivedNotes() async {
+    // Fetch only archived notes
+    archivedNotes = await NoteDatabase.instance.getNotes(archived: true);
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  Future<void> _unarchive(Note note) async {
+    // Unarchive the note in the database
+    final updatedNote = note.copy(archived: false);
+    await NoteDatabase.instance.updateNote(updatedNote);
+
+    // Refresh the list of archived notes
+    _fetchArchivedNotes();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(context,MaterialPageRoute(builder: (context) => CreateNoteView()) );
-        },
-        backgroundColor: cardColor,
-        child: Icon(Icons.add , size: 45,),
-      ),
-        endDrawerEnableOpenDragGesture: true,
-        key: _drawerKey,
-        drawer: SideMenu(),
+      backgroundColor: bgColor,
+      appBar: AppBar(
         backgroundColor: bgColor,
-        body: SafeArea(
-            child: SingleChildScrollView(
-          child: Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                    margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                    width: MediaQuery.of(context).size.width,
-                    height: 55,
-                    decoration: BoxDecoration(
-                        color: cardColor,
-                        borderRadius: BorderRadius.circular(8),
-                        boxShadow: [
-                          BoxShadow(
-                              color: black.withOpacity(0.2),
-                              spreadRadius: 1,
-                              blurRadius: 3)
-                        ]),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              IconButton(
-                                  onPressed: () {
-                                    _drawerKey.currentState!.openDrawer();
-                                  },
-                                  icon: Icon(
-                                    Icons.menu,
-                                    color: white,
-                                  )),
-                              SizedBox(
-                                width: 16,
-                              ),
-                              Container(
-                                  height: 55,
-                                  width: 200,
-                                  child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Search Your Notes",
-                                          style: TextStyle(
-                                              color: white.withOpacity(0.5),
-                                              fontSize: 16),
-                                        )
-                                      ]))
-                            ],
-                          ),
-                          Container(
-                            margin: EdgeInsets.symmetric(horizontal: 10),
-                            child: Row(
-                              children: [
-                                TextButton(
-                                    style: ButtonStyle(
-                                        overlayColor:
-                                            MaterialStateColor.resolveWith(
-                                                (states) =>
-                                                    white.withOpacity(0.1)),
-                                        shape: MaterialStateProperty.all<
-                                                RoundedRectangleBorder>(
-                                            RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(50.0),
-                                        ))),
-                                    onPressed: () {},
-                                    child: Icon(
-                                      Icons.grid_view,
-                                      color: white,
-                                    )),
-                                SizedBox(
-                                  width: 9,
-                                ),
-                                CircleAvatar(
-                                  radius: 16,
-                                  backgroundColor: Colors.white,
-                                )
-                              ],
-                            ),
-                          ),
-                        ])),
-                NoteSectionAll(),
-                NotesListSection()
-              ],
-            ),
-          ),
-        )));
-  }
-
-  Widget NoteSectionAll() {
-    return Container(
-        child: Column(
-      children: [
-        Container(
-          margin: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text(
-                "ALL",
-                style: TextStyle(
-                    color: white.withOpacity(0.5),
-                    fontSize: 13,
-                    fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-        ),
-        Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: 10,
-              vertical: 15,
-            ),
-            child: StaggeredGridView.countBuilder(
-              physics: NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: 10,
-              mainAxisSpacing: 12,
-              crossAxisSpacing: 12,
+        elevation: 0.0,
+        title: Text('Archived Notes', style: TextStyle(color: white),),
+        leading: IconButton(onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => SideMenu()));}, icon: Icon(Icons.menu_outlined, color: white,)),
+      ),
+      drawer: SideMenu(),
+      body: isLoading
+          ? Center(child: CircularProgressIndicator(color: Colors.white))
+          : StaggeredGridView.countBuilder(
+              padding: EdgeInsets.all(10),
               crossAxisCount: 4,
+              itemCount: archivedNotes.length,
               staggeredTileBuilder: (index) => StaggeredTile.fit(2),
-              itemBuilder: (context, index) => 
-              InkWell(
-                onTap: () 
-                {
-                  // Navigator.push(context, MaterialPageRoute(builder: (context) => NoteView(note: note,)));
-                },
-                child: 
-              Container(
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                    border: Border.all(color: white.withOpacity(0.4)),
-                    borderRadius: BorderRadius.circular(7)),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("HEADING",
-                        style: TextStyle(
-                            color: white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold)),
-                    SizedBox(
-                      height: 10,
+              mainAxisSpacing: 10,
+              crossAxisSpacing: 10,
+              itemBuilder: (context, index) {
+                final note = archivedNotes[index];
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => NoteView(note: note, onNoteUpdated: () {},),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: white.withOpacity(0.4)),
                     ),
-                    Text(
-                      index.isEven
-                          ? note.length > 250
-                              ? "${note.substring(0, 250)}..."
-                              : note
-                          : note1,
-                      style: TextStyle(color: white),
-                    )
-                  ],
-                ),
-              ),
-              
-              )
-            )),
-      ],
-    ));
-  }
-
-  Widget NotesListSection() {
-    return Container(
-        child: Column(
-      children: [
-        Container(
-          margin: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text(
-                "LIST VIEW",
-                style: TextStyle(
-                    color: white.withOpacity(0.5),
-                    fontSize: 13,
-                    fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-        ),
-        Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: 10,
-              vertical: 15,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          note.title,
+                          style: TextStyle(
+                            color: white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height: 8),
+                        Text(
+                          note.content.length > 100
+                              ? '${note.content.substring(0, 100)}...'
+                              : note.content,
+                          style: TextStyle(color: white.withOpacity(0.8)),
+                        ),
+                        SizedBox(height: 8),
+                        Align(
+                          alignment: Alignment.bottomRight,
+                          child: IconButton(
+                            icon: Icon(Icons.unarchive, color: Colors.red),
+                            onPressed: () {
+                              _unarchive(note);
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
             ),
-            child: ListView.builder(
-              physics: NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: 10,
-              itemBuilder: (context, index) => Container(
-                padding: EdgeInsets.all(10),
-                margin: EdgeInsets.only(bottom: 10),
-                decoration: BoxDecoration(
-                    border: Border.all(color: white.withOpacity(0.4)),
-                    borderRadius: BorderRadius.circular(7)),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("HEADING",
-                        style: TextStyle(
-                            color: white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold)),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      index.isEven
-                          ? note.length > 250
-                              ? "${note.substring(0, 250)}..."
-                              : note
-                          : note1,
-                      style: TextStyle(color: white),
-                    )
-                  ],
-                ),
-              ),
-            )),
-      ],
-    ));
+    );
   }
 }
