@@ -49,8 +49,7 @@ class _HomeState extends State<Home> {
   }
 
   Future getAllNotes() async {
-    this.notesList = await NoteDatabase.instance.readAllNotes();
-
+    
     setState(() {
       isLoading = false;
     });
@@ -78,10 +77,6 @@ class _HomeState extends State<Home> {
       return 0; // both are either pinned or not pinned
     });
 
-    setState(() {
-      notesList = notes;
-      isLoading = false;
-    });
   }
 
   void _refreshNotes() {

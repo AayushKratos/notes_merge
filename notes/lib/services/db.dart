@@ -1,4 +1,5 @@
 import 'package:notes/model/NoteModel.dart';
+import 'package:notes/services/firestore_db.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -38,8 +39,9 @@ class NoteDatabase {
   }
 
   Future<int?> InsertEntry(Note note) async {
+    await FireDB().createNewNoteFirestore(note);
     final db = await database;
-    await db!.insert('Notes', note.toJson(), conflictAlgorithm: ConflictAlgorithm.replace);
+    await db!.insert('Notes', note.toJson());
   }
 
   Future<List<Note>> readAllNotes() async {
@@ -64,6 +66,7 @@ class NoteDatabase {
   }
 
   Future updateNote(Note note) async {
+    await FireDB().updateNoteFirestore(note);
     final db = await instance.database;
 
     await db
@@ -71,6 +74,7 @@ class NoteDatabase {
   }
 
   Future delteNote(Note note) async {
+    await FireDB().deleteNoteFirestore(note);
     final db = await instance.database;
 
     await db!.delete(NotesImpNames.TableName,

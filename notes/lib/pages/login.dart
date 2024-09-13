@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:get/get.dart';
 import 'package:notes/pages/forgot.dart';
+import 'package:notes/pages/home.dart';
 import 'package:notes/pages/signup.dart';
 
 class LoginPage extends StatefulWidget {
@@ -106,19 +107,16 @@ class _LoginPageState extends State<LoginPage> {
                     decoration: InputDecoration(hintText: 'Enter password'),
                   ),
                   ElevatedButton(
-                      onPressed: (() => signIn()), child: Text('Login')),
+                      onPressed: (() => Get.to(() => Home())), child: Text('Login')),
                   SizedBox(height: 30),
                   ElevatedButton(
-                      onPressed: (() => Get.to(Signup())),
+                      onPressed: (() => Get.to(() => Signup())),
                       child: Text('Register Now')),
                   SizedBox(height: 30),
                   ElevatedButton(
-                      onPressed: (() => Get.to(Forgot())),
+                      onPressed: (() => Get.to(() => Forgot())),
                       child: Text('Forgot Password?')),
                   SizedBox(height: 30),
-                  ElevatedButton(
-                      onPressed: signInWithGoogle,
-                      child: Text('Sign in with Google')),
                 ],
               ),
             ),
