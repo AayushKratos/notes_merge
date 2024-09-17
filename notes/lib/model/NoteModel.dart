@@ -6,6 +6,7 @@ class NotesImpNames {
   static String createdTime = "createdTime";
   static String archived = "archived";
   static String TableName = "Notes";
+  static String fireID = "FireID";
   static List<String> values = [id, pin, title, content, createdTime, archived];
 }
 
@@ -16,6 +17,7 @@ class Note {
   String content;
   DateTime? createdTime;
   bool archived;
+  String fireId;
 
   Note({
     this.id,
@@ -24,6 +26,7 @@ class Note {
     required this.content,
     required this.createdTime,
     required this.archived,
+    required this.fireId,
   });
 
   Note copy({
@@ -33,6 +36,7 @@ class Note {
     String? content,
     DateTime? createdTime,
     bool? archived,
+    String? fireId,
   }) {
     return Note(
       id: id ?? this.id,
@@ -41,6 +45,7 @@ class Note {
       content: content ?? this.content,
       createdTime: createdTime ?? this.createdTime,
       archived: archived ?? this.archived,
+      fireId: fireId ?? this.fireId,
     );
   }
 
@@ -54,6 +59,7 @@ class Note {
           json[NotesImpNames.createdTime] as String,
         ),
         archived: json[NotesImpNames.archived] == 1,
+        fireId: json[NotesImpNames.fireID] as String,
         );
   }
 
@@ -65,6 +71,7 @@ class Note {
       NotesImpNames.content: content,
       NotesImpNames.createdTime: createdTime!.toIso8601String(),
       NotesImpNames.archived: archived ? 1 : 0,
+      NotesImpNames.fireID: fireId,
     };
   }
 }

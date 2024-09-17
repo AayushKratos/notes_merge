@@ -34,20 +34,19 @@ class _EditNoteViewState extends State<EditNoteView> {
           IconButton(
             splashRadius: 17,
             onPressed: () async {
-              // Create a new note object with the updated fields
               Note updatedNote = Note(
                   content: NewNoteDet,
                   title: NewTitle,
                   createdTime:
-                      widget.note.createdTime, // Use the original creation time
+                      widget.note.createdTime, 
                   pin: widget
-                      .note.pin, // Keep the pin status unchanged (if relevant)
+                      .note.pin, 
                   id: widget.note
-                      .id, // Pass the original note ID to avoid creating a new note
-                  archived: widget.note.archived
+                      .id, 
+                  archived: widget.note.archived,
+                  fireId: widget.note.fireId
                   );
 
-              // Update the note in the database
               await NoteDatabase.instance.updateNote(updatedNote);
 
               // Navigate to the NoteView screen

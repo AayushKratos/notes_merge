@@ -85,4 +85,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'notes-merged.appspot.com',
     measurementId: 'G-L0EFGE73LE',
   );
+
 }

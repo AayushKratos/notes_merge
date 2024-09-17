@@ -21,7 +21,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   bool isLoading = true;
   bool isGridView = true;
-  late List<Note> notesList;
+  late List<Note> notesList = [];
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
   String note =
       "THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE THIS IS NOTE";
@@ -29,8 +29,8 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     // TODO: implement initState
-    super.initState();
     _fetchNotes();
+    super.initState();
     // getAllNotes();
   }
 
@@ -69,13 +69,19 @@ class _HomeState extends State<Home> {
 
   Future<void> _fetchNotes() async {
     List<Note> notes = await NoteDatabase.instance.getNotes(archived: false);
-
-    // Custom sorting: pinned notes come first
-    notes.sort((a, b) {
+    notesList = notes;
+    // Custom Listsorting: pinned notes come first
+      notes.sort((a, b) {
       if (a.pin && !b.pin) return -1; // a is pinned, b is not
       if (!a.pin && b.pin) return 1; // a is not pinned, b is
       return 0; // both are either pinned or not pinned
     });
+    
+     if(mounted){
+    setState(() {
+      isLoading = false;
+    });
+     }
 
   }
 

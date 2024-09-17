@@ -26,10 +26,18 @@ class _LoginPageState extends State<LoginPage> {
     });
 
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
+      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: emailController.text,
         password: passwordController.text,
       );
+
+      if (userCredential.user != null) {
+        // Authentication successful, navigate to Home
+        Get.off(() => Home());
+      } else {
+        // If user is null, display error message
+        Get.snackbar("Login Failed", "User not found.");
+      }
     } on FirebaseAuthException catch (e) {
       Get.snackbar("Error", e.message ?? "An error occurred.");
     } catch (e) {
@@ -52,12 +60,10 @@ class _LoginPageState extends State<LoginPage> {
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
 
       if (googleUser == null) {
-        // User cancelled the sign-in
-        if (mounted) {
-          setState(() {
-            isLoading = false;
-          });
-        }
+        // User canceled the sign-in
+        setState(() {
+          isLoading = false;
+        });
         return;
       }
 
@@ -68,9 +74,14 @@ class _LoginPageState extends State<LoginPage> {
         idToken: googleAuth.idToken,
       );
 
-      await FirebaseAuth.instance.signInWithCredential(credential);
-      
-      // Optionally, navigate to another page or update the UI here
+      UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+
+      if (userCredential.user != null) {
+        // Authentication successful, navigate to Home
+        Get.off(() => Home());
+      } else {
+        Get.snackbar("Login Failed", "User not found.");
+      }
     } on FirebaseAuthException catch (e) {
       Get.snackbar("Error", e.message ?? "An error occurred during sign-in.");
     } catch (e) {
@@ -86,17 +97,14 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return isLoading
-        ? Center(
-            child: CircularProgressIndicator(),
-          )
-        : Scaffold(
+    return Scaffold(
             appBar: AppBar(
               title: Text("Login"),
             ),
             body: Padding(
               padding: EdgeInsets.all(20),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   TextField(
                     controller: emailController,
@@ -104,19 +112,25 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   TextField(
                     controller: passwordController,
+                    obscureText: true, // Hides password input
                     decoration: InputDecoration(hintText: 'Enter password'),
                   ),
+                  SizedBox(height: 20),
                   ElevatedButton(
-                      onPressed: (() => Get.to(() => Home())), child: Text('Login')),
+                      onPressed: signIn, // Trigger email sign-in
+                      child: Text('Login')),
                   SizedBox(height: 30),
                   ElevatedButton(
-                      onPressed: (() => Get.to(() => Signup())),
+                      onPressed: () => Get.to(() => Signup()),
                       child: Text('Register Now')),
                   SizedBox(height: 30),
                   ElevatedButton(
-                      onPressed: (() => Get.to(() => Forgot())),
+                      onPressed: () => Get.to(() => Forgot()),
                       child: Text('Forgot Password?')),
                   SizedBox(height: 30),
+                  ElevatedButton(
+                      onPressed: signInWithGoogle, // Trigger Google sign-in
+                      child: Text('Sign in with Google')),
                 ],
               ),
             ),
